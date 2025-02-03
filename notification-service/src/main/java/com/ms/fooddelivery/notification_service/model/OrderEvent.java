@@ -9,7 +9,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderEvent {
-
   private Long orderId;
   private String eventType; // e.g., ORDER_CREATED, ORDER_CONFIRMED, ORDER_DISPATCHED, ORDER_DELIVERED
   private Date timestamp;

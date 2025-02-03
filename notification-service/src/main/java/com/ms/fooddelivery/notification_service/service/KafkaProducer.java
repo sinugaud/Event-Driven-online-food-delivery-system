@@ -1,6 +1,6 @@
 package com.ms.fooddelivery.notification_service.service;
 
-import com.ms.fooddelivery.order_service.model.OrderEvent;
+import com.ms.fooddelivery.notification_service.model.OrderEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

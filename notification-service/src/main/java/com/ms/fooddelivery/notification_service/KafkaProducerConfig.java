@@ -1,6 +1,6 @@
 package com.ms.fooddelivery.notification_service;
 
-import com.ms.fooddelivery.order_service.model.OrderEvent;
+import com.ms.fooddelivery.notification_service.model.OrderEvent;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +26,7 @@ public class KafkaProducerConfig {
     configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
     configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+
     // Configure retries and other properties for resilience
     configProps.put(ProducerConfig.RETRIES_CONFIG, 3);
     configProps.put(ProducerConfig.ACKS_CONFIG, "all");

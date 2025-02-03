@@ -3,8 +3,6 @@ package com.ms.fooddelivery.notification_service.listener;
 
 import com.ms.fooddelivery.notification_service.model.OrderEvent;
 import com.ms.fooddelivery.notification_service.service.NotificationService;
-import com.ms.fooddelivery.notificationservice.model.OrderEvent;
-import com.ms.fooddelivery.notificationservice.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

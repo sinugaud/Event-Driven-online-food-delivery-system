@@ -1,24 +1,20 @@
-// File: OrderEventListener.java
 package com.ms.fooddelivery.notification_service.listener;
 
 import com.ms.fooddelivery.notification_service.model.OrderEvent;
 import com.ms.fooddelivery.notification_service.service.NotificationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
 
-@Component
-public class OrderEventListener {
-
+public class DeliveryEventListner {
     private NotificationService notificationService;
 
-    public OrderEventListener(NotificationService notificationService) {
+    public DeliveryEventListner(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
 
     // Listen to the order events topic.
-    @KafkaListener(topics = "${kafka.topic.order}", groupId = "notification-service-group")
-    public void listenOrderEvents(OrderEvent event) {
+    @KafkaListener(topics = "delivery-events", groupId = "notification-service-group")
+    public void listenDeliveryEvents(OrderEvent event) {
         notificationService.sendNotification(event);
     }
 }
+

@@ -1,4 +1,3 @@
-// File: NotificationService.java
 package com.ms.fooddelivery.notification_service.service;
 
 import com.ms.fooddelivery.notification_service.model.OrderEvent;

@@ -23,6 +23,9 @@ public class KafkaProducer {
     private String orderTopic;
 
     public void sendOrderEvent(OrderEvent event) {
+        logger.info("order event : {}", event);
+
+        logger.info("order topic : {}", orderTopic);
         CompletableFuture<SendResult<String, OrderEvent>> future = kafkaTemplate.send(orderTopic, event);
 
         future.whenComplete((result, throwable) -> {

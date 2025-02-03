@@ -1,5 +1,5 @@
 // File: DeliveryEvent.java
-package com.ms.fooddelivery.delivery_service.model;
+package com.ms.fooddelivery.notification_service.model;
 
 import lombok.Data;
 

@@ -25,19 +25,15 @@ public class DeliveryAssignmentService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    /**
-     * Simulate assigning a delivery person when an order is created.
-     */
+
     public void assignDelivery(OrderEvent orderEvent) {
         logger.info("Assigning delivery for Order ID {}", orderEvent.getOrderId());
-        // Create a delivery event (for example, mark it as "ASSIGNED")
         DeliveryEvent deliveryEvent = new DeliveryEvent(
             orderEvent.getOrderId(), 
             "ASSIGNED", 
             new Date()
         );
-        // Publish the delivery event to the designated Kafka topic
-        kafkaTemplate.send(deliveryTopic, deliveryEvent);
-        logger.info("Published DeliveryEvent for Order ID {} to topic {}", orderEvent.getOrderId(), deliveryTopic);
+        kafkaTemplate.send("delivery-events", deliveryEvent);
+        logger.info("Published DeliveryEvent for Order ID {} to topic {}, delivery {}", orderEvent.getOrderId(), deliveryTopic, deliveryEvent);
     }
 }

@@ -12,8 +12,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
+import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.kafka.support.ExponentialBackOffWithMaxRetries;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
@@ -26,6 +29,20 @@ public class KafkaProducerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
+    @Value("${kafka.topic.order}")
+    private String orderTopic; // e.g., "order-events"
+
+//    @Value("${kafka.topic.order.dlq:order-events.DLT}")
+//    private String orderDLQTopic;
+//
+//
+//    @Bean
+//    public NewTopic orderEvents() {
+//        return TopicBuilder.name("order-events.DLT")
+//                .partitions(2)
+//                .replicas(1)
+//                .build();
+//    }
     @Bean
     public ProducerFactory<String, DeliveryEvent> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -40,12 +57,14 @@ public class KafkaProducerConfig {
                 new JsonSerializer<DeliveryEvent>().noTypeInfo() // Correctly disables type headers
         );
     }
+
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, OrderEvent> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, OrderEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
+
     @Bean
     public ConsumerFactory<String, OrderEvent> consumerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -60,8 +79,33 @@ public class KafkaProducerConfig {
         return new DefaultKafkaConsumerFactory<>(configProps, new StringDeserializer(), deserializer
         );
     }
+
     @Bean
-    public KafkaTemplate<String, DeliveryEvent> kafkaTemplate() {
+    public KafkaTemplate<?, ?> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
+
+
+
+//    @Bean
+//    public DefaultErrorHandler errorHandler(KafkaTemplate<String, OrderEvent> kafkaTemplate) {
+//        // Use an exponential backoff policy: try 3 times with increasing intervals
+//        ExponentialBackOffWithMaxRetries backOff = new ExponentialBackOffWithMaxRetries(3);
+//        backOff.setInitialInterval(1000L);  // 1 second
+//        backOff.setMultiplier(2.0);
+//        backOff.setMaxInterval(10000L);  // 10 seconds
+//
+//        // Recoverer that sends the failed message to the DLQ
+//        DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(kafkaTemplate,
+//                // Map the original record to the DLQ topic. Here, we are simply redirecting
+//                // to the topic defined by orderDLQTopic while preserving the partition.
+//                (record, exception) -> new TopicPartition(orderDLQTopic, record.partition())
+//        );
+//
+//        return new DefaultErrorHandler(recoverer, backOff);
+//    }
+
+
 }
+
+

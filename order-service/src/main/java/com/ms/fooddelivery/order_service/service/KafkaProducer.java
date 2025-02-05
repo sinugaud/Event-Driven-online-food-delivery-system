@@ -1,10 +1,13 @@
 package com.ms.fooddelivery.order_service.service;
 
 import com.ms.fooddelivery.order_service.model.OrderEvent;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.aspectj.weaver.ast.Or;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -39,4 +42,5 @@ public class KafkaProducer {
             }
         });
     }
+
 }
